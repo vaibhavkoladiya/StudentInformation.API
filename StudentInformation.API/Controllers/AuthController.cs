@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
@@ -14,12 +15,20 @@ namespace StudentInformation.API.Controllers
     {
         public static User user = new User();
         private readonly IConfiguration _configuration;
+        private readonly IUsertService _userService;
 
-
-        public AuthController(IConfiguration configuration)
+        public AuthController(IConfiguration configuration, IUsertService userService )
         {
             _configuration = configuration;
-            
+            _userService = userService;
+
+        }
+
+        [HttpGet, Authorize]
+        public ActionResult<string> GetMe()
+        {
+            var userName = _userService.GetMyName();
+            return Ok(userName);
         }
 
         [HttpPost("register")]
@@ -60,7 +69,7 @@ namespace StudentInformation.API.Controllers
             List<Claim> claims = new List<Claim>
             {
                 new Claim(ClaimTypes.Name, user.Username),
-                //new Claim(ClaimTypes.Role, "Admin")
+                new Claim(ClaimTypes.Role, "Admin")
             };
 
             var key = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(
