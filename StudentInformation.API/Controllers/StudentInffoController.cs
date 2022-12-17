@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using StudentInformation.API.Data;
 using StudentInformation.API.Models;
@@ -16,7 +17,7 @@ namespace StudentInformation.API.Controllers
             _studentInformationDbContext = studentInformationDbContext;
         }
 
-        [HttpGet]
+        [HttpGet, Authorize(Roles = "Admin")]
         public async Task<IActionResult> GetAllStudents()
         {
             var Allstudents = await _studentInformationDbContext.allStudents.ToListAsync();
