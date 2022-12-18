@@ -45,7 +45,7 @@ namespace StudentInformation.API.Controllers
 
         }
 
-        [HttpGet]
+        [HttpGet, Authorize(Roles = "Admin")]
         [Route("{id:Guid}")]
         public async Task<IActionResult> GetStudent([FromRoute] Guid id)
         {
