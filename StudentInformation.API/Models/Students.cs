@@ -15,10 +15,11 @@ namespace StudentInformation.API.Models
         public long phoneNumber { get; set; }
 
         [Required]
+        //[ForeignKey("Department")]
         public int Did { get; set; }
 
-        [ForeignKey("Did")]
-        public  Departments Department { get; set; }
+
+        //public Departments Department { get; set; }
 
 
 

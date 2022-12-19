@@ -42,6 +42,12 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         };
     });
 
+builder.Services.AddCors(options => options.AddPolicy(name: "NgOrigins",
+    policy =>
+    {
+        policy.WithOrigins("http://localhost:4200").AllowAnyMethod().AllowAnyHeader();
+    }));
+
 builder.Services.AddDbContext<StudentInformationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("StudentInfoConnectionString")));
 
@@ -54,6 +60,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseCors("NgOrigins");
 
 app.UseHttpsRedirection();
 

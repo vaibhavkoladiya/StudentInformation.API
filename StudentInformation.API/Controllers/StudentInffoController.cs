@@ -17,23 +17,25 @@ namespace StudentInformation.API.Controllers
             _studentInformationDbContext = studentInformationDbContext;
         }
 
+        //[HttpGet, Authorize(Roles = "Admin")]
         [HttpGet, Authorize(Roles = "Admin")]
         public async Task<IActionResult> GetAllStudents()
         {
             var Allstudents = await _studentInformationDbContext.allStudents.ToListAsync();
+            String[] departmentNames = new string[Allstudents.Count];
 
-           
 
             for (int i = 0; i < Allstudents.Count; i++)
             {
-               await _studentInformationDbContext.departments.FirstOrDefaultAsync(x => x.Did == Allstudents[i].Did);
-                
+                var department = await _studentInformationDbContext.departments.FirstOrDefaultAsync(x => x.Did == Allstudents[i].Did);
+                departmentNames[i] = department.departmentName;
             }
 
             return Ok(Allstudents); 
         }
 
-        [HttpPost]
+        [HttpPost, Authorize(Roles = "Admin")]
+        //[HttpPost]
         public async Task<IActionResult> AddStudent([FromBody] Students studentReqquest)
         {
             studentReqquest.id = Guid.NewGuid();
@@ -65,7 +67,31 @@ namespace StudentInformation.API.Controllers
             return Ok(student);
         }
 
-        [HttpPut]
+        [HttpGet("GetDepartmentOfallStudent")]
+        public async Task<IActionResult> GetDepartmentOfallStudent()
+        {
+            //var departofstudents = await _studentInformationDbContext.allStudents.Where(x => x.Did == did).ToListAsync();
+
+            var Allstudents = await _studentInformationDbContext.allStudents.ToListAsync();
+            var departmentNames = new Departments[Allstudents.Count];
+
+
+            for (int i = 0; i < Allstudents.Count; i++)
+            {
+                var dep = await _studentInformationDbContext.departments.FirstOrDefaultAsync(x => x.Did == Allstudents[i].Did);
+
+
+
+                departmentNames[i] = dep;
+               // System.Diagnostics.Debug.WriteLine(departmentNames[i]);
+
+
+            }
+
+            return Ok(departmentNames);
+        }
+
+        [HttpPut, Authorize(Roles = "Admin")]
         [Route("{id:Guid}")]
         public async Task<IActionResult> updateStudent([FromRoute] Guid id, Students updateStudentRequest) 
         {
@@ -90,7 +116,7 @@ namespace StudentInformation.API.Controllers
         }
 
 
-        [HttpDelete]
+        [HttpDelete, Authorize(Roles = "Admin")]
         [Route("{id:Guid}")]
         public async Task<IActionResult> deleteStudent([FromRoute] Guid id)
         {

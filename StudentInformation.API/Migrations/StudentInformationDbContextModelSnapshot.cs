@@ -44,33 +44,6 @@ namespace StudentInformation.API.Migrations
                     b.ToTable("departments");
                 });
 
-            modelBuilder.Entity("StudentInformation.API.Models.Professors", b =>
-                {
-                    b.Property<int>("Pid")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Pid"));
-
-                    b.Property<int>("Did")
-                        .HasColumnType("int");
-
-                    b.Property<string>("coreSubject")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("email")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("name")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Pid");
-
-                    b.HasIndex("Did");
-
-                    b.ToTable("professors");
-                });
-
             modelBuilder.Entity("StudentInformation.API.Models.Students", b =>
                 {
                     b.Property<Guid>("id")
@@ -100,31 +73,7 @@ namespace StudentInformation.API.Migrations
 
                     b.HasKey("id");
 
-                    b.HasIndex("Did");
-
                     b.ToTable("allStudents");
-                });
-
-            modelBuilder.Entity("StudentInformation.API.Models.Professors", b =>
-                {
-                    b.HasOne("StudentInformation.API.Models.Departments", "Department")
-                        .WithMany()
-                        .HasForeignKey("Did")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Department");
-                });
-
-            modelBuilder.Entity("StudentInformation.API.Models.Students", b =>
-                {
-                    b.HasOne("StudentInformation.API.Models.Departments", "Department")
-                        .WithMany()
-                        .HasForeignKey("Did")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Department");
                 });
 #pragma warning restore 612, 618
         }

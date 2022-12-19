@@ -11,6 +11,6 @@ namespace StudentInformation.API.Data
 
         public DbSet<Students> allStudents { get; set; }
         public DbSet<Departments> departments { get; set; }
-        public DbSet<Professors>  professors { get; set; }
+        //public DbSet<Professors>  professors { get; set; }
     }
 }

@@ -1,7 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using StudentInformation.API.Data;
 using StudentInformation.API.Models;
+using System.Data;
 
 namespace StudentInformation.API.Controllers
 {
@@ -16,15 +18,18 @@ namespace StudentInformation.API.Controllers
             _studentInformationDbContext = studentInformationDbContext;
         }
 
-        [HttpGet]
+        [HttpGet, Authorize(Roles = "Admin")]
         public async Task<IActionResult> GetAllDepartment()
         {
             var department = await _studentInformationDbContext.departments.ToListAsync();
 
+
             return Ok(department);
         }
 
-        [HttpGet]
+
+
+        [HttpGet(), Authorize(Roles = "Admin")]
         [Route("{id:int}")]
         public async Task<IActionResult> GetDepartment([FromRoute] int id)
         {
@@ -38,7 +43,22 @@ namespace StudentInformation.API.Controllers
             return Ok(department);
         }
 
-        [HttpPost]
+        //[HttpGet()]
+        //[Route("{did:int}")
+        [HttpGet("departmentstudents/{did:int}"), Authorize(Roles = "Admin")]
+        public async Task<IActionResult> GetstudentDepartment([FromRoute] int did)
+        {
+            var departmentstu = await _studentInformationDbContext.allStudents.Where(x => x.Did == did).ToListAsync();
+
+            if (departmentstu == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(departmentstu);
+        }
+
+        [HttpPost, Authorize(Roles = "Admin")]
         public async Task<IActionResult> addDepartment([FromBody] Departments departmentReqquest)
         {
 
@@ -50,7 +70,7 @@ namespace StudentInformation.API.Controllers
 
         }
 
-        [HttpPut]
+        [HttpPut, Authorize(Roles = "Admin")]
         [Route("{id:int}")]
         public async Task<IActionResult> updateStudent([FromRoute] int id, Departments updateDepartmentRequest)
         {
@@ -72,7 +92,7 @@ namespace StudentInformation.API.Controllers
             return Ok(Department);
         }
 
-        [HttpDelete]
+        [HttpDelete, Authorize(Roles = "Admin")]
         [Route("{id:int}")]
         public async Task<IActionResult> deleteStudent([FromRoute] int id)
         {
