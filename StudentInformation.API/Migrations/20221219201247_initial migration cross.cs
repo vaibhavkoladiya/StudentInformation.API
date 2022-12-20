@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace StudentInformation.API.Migrations
 {
     /// <inheritdoc />
-    public partial class mig13 : Migration
+    public partial class initialmigrationcross : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

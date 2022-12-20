@@ -29,7 +29,7 @@ namespace StudentInformation.API.Controllers
 
 
 
-        [HttpGet(), Authorize(Roles = "Admin")]
+        [HttpGet()]
         [Route("{id:int}")]
         public async Task<IActionResult> GetDepartment([FromRoute] int id)
         {

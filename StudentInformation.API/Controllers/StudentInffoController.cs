@@ -22,14 +22,7 @@ namespace StudentInformation.API.Controllers
         public async Task<IActionResult> GetAllStudents()
         {
             var Allstudents = await _studentInformationDbContext.allStudents.ToListAsync();
-            String[] departmentNames = new string[Allstudents.Count];
-
-
-            for (int i = 0; i < Allstudents.Count; i++)
-            {
-                var department = await _studentInformationDbContext.departments.FirstOrDefaultAsync(x => x.Did == Allstudents[i].Did);
-                departmentNames[i] = department.departmentName;
-            }
+  
 
             return Ok(Allstudents); 
         }
@@ -67,7 +60,7 @@ namespace StudentInformation.API.Controllers
             return Ok(student);
         }
 
-        [HttpGet("GetDepartmentOfallStudent")]
+        [HttpGet("GetDepartmentOfallStudent"),  Authorize(Roles = "Admin")]
         public async Task<IActionResult> GetDepartmentOfallStudent()
         {
             //var departofstudents = await _studentInformationDbContext.allStudents.Where(x => x.Did == did).ToListAsync();

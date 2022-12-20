@@ -12,8 +12,8 @@ using StudentInformation.API.Data;
 namespace StudentInformation.API.Migrations
 {
     [DbContext(typeof(StudentInformationDbContext))]
-    [Migration("20221219103156_mig13")]
-    partial class mig13
+    [Migration("20221219201247_initial migration cross")]
+    partial class initialmigrationcross
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
